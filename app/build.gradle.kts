@@ -68,18 +68,20 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    implementation("androidx.navigation:navigation-compose:2.5.3")
+    implementation("androidx.navigation:navigation-compose:2.7.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     implementation ("androidx.compose.material:material-icons-extended")
     // Media Player
-    val media3_version = "1.1.0"
+    val media3_version = "1.1.1"
     implementation("androidx.media3:media3-datasource-okhttp:$media3_version")
     implementation("androidx.media3:media3-exoplayer:$media3_version")
     implementation("androidx.media3:media3-ui:$media3_version")
     implementation("androidx.media3:media3-session:$media3_version")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0") // Needed MediaSessionCompat.Token
+    implementation("androidx.legacy:legacy-support-v4:1.0.0") // Needed for MediaSessionCompat.Token
     // Glide
     implementation("com.github.bumptech.glide:glide:4.15.1")
+
+    //permission handling
     implementation ("com.google.accompanist:accompanist-permissions:0.30.0")
 
     // Dagger - Hilt
