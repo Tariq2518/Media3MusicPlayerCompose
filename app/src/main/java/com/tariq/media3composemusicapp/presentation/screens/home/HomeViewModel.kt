@@ -145,11 +145,11 @@ class HomeViewModel @Inject constructor(
         return String.format("%02d:%02d", minutes, seconds)
     }
 
-//    override fun onCleared() {
-//        viewModelScope.launch {
-//            musicServiceHandler.onMediaStateEvents(MediaStateEvents.Stop)
-//        }
-//        super.onCleared()
-//    }
+    override fun onCleared() {
+        viewModelScope.launch {
+            musicServiceHandler.onMediaStateEvents(MediaStateEvents.Stop)
+        }
+        super.onCleared()
+    }
 
 }
