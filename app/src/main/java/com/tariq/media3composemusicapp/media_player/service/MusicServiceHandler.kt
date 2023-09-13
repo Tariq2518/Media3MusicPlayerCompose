@@ -5,6 +5,7 @@ import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.tariq.media3composemusicapp.utils.MediaStateEvents
 import com.tariq.media3composemusicapp.utils.MusicStates
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -23,6 +24,10 @@ class MusicServiceHandler @Inject constructor(
     val musicStates: StateFlow<MusicStates> = _musicStates.asStateFlow()
 
     private var job: Job? = null
+
+    init {
+        exoPlayer.addListener(this)
+    }
 
     fun setMediaItem(mediaItem: MediaItem) {
         exoPlayer.setMediaItem(mediaItem)
@@ -80,11 +85,12 @@ class MusicServiceHandler @Inject constructor(
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         _musicStates.value = MusicStates.MediaPlaying(isPlaying = isPlaying)
         _musicStates.value = MusicStates.CurrentMediaPlaying(exoPlayer.currentMediaItemIndex)
         if (isPlaying) {
-            GlobalScope.launch(Dispatchers.IO) {
+            GlobalScope.launch(Dispatchers.Main) {
                 startProgressUpdate()
             }
         } else {

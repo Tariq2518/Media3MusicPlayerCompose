@@ -13,7 +13,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MediaService : MediaSessionService() {
 
-    private lateinit var mediaSession: MediaSession
+    @Inject
+    lateinit var mediaSession: MediaSession
 
     @Inject
     lateinit var musicNotificationManager: MusicNotificationManager

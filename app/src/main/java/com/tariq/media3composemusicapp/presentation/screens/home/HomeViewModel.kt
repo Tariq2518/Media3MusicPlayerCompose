@@ -1,6 +1,5 @@
-package com.tariq.media3composemusicapp.presentation.screens
+package com.tariq.media3composemusicapp.presentation.screens.home
 
-import android.icu.util.TimeUnit
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
@@ -101,6 +100,7 @@ class HomeViewModel @Inject constructor(
                         homeUiEvents.progress
                     )
                 )
+                progress = homeUiEvents.progress
             }
 
         }
@@ -144,5 +144,12 @@ class HomeViewModel @Inject constructor(
 
         return String.format("%02d:%02d", minutes, seconds)
     }
+
+//    override fun onCleared() {
+//        viewModelScope.launch {
+//            musicServiceHandler.onMediaStateEvents(MediaStateEvents.Stop)
+//        }
+//        super.onCleared()
+//    }
 
 }
