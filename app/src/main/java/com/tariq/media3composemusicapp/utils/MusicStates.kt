@@ -1,7 +1,5 @@
 package com.tariq.media3composemusicapp.utils
 
-import java.time.Duration
-
 sealed class MusicStates {
     object Initial : MusicStates()
     data class MediaBuffering(val progress: Long) : MusicStates()

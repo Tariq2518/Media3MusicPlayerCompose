@@ -7,7 +7,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MusicRepository @Inject constructor(
-    private val contentResolverHelper: ContentResolverHelper
+    private val contentResolverHelper: ContentResolverHelper,
 ) {
     suspend fun getAudioData(): List<AudioItem> = withContext(Dispatchers.IO) {
         contentResolverHelper.getAudioData()

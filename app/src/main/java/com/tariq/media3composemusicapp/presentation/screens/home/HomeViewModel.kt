@@ -1,10 +1,13 @@
 package com.tariq.media3composemusicapp.presentation.screens.home
 
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
@@ -24,21 +27,37 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit.*
 import javax.inject.Inject
 
+@OptIn(SavedStateHandleSaveableApi::class)
 @HiltViewModel
+
 class HomeViewModel @Inject constructor(
     private val musicServiceHandler: MusicServiceHandler,
     private val repository: MusicRepository,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    var duration by savedStateHandle.saveable { mutableStateOf(0L) }
-    var progress by savedStateHandle.saveable { mutableStateOf(0f) }
-    var progressValue by savedStateHandle.saveable { mutableStateOf("00:00") }
+    private var duration by savedStateHandle.saveable { mutableLongStateOf(0L) }
+    var progress by savedStateHandle.saveable { mutableFloatStateOf(0f) }
+    private var progressValue by savedStateHandle.saveable { mutableStateOf("00:00") }
     var isMusicPlaying by savedStateHandle.saveable { mutableStateOf(false) }
-    var currentSelectedMusic by savedStateHandle.saveable { mutableStateOf(AudioItem(0L, "".toUri(), "", "", 0, "", "", null)) }
+    var currentSelectedMusic by savedStateHandle.saveable {
+        mutableStateOf(
+            AudioItem(
+                0L,
+                "".toUri(),
+                "",
+                "",
+                0,
+                "",
+                "",
+                null
+            )
+        )
+    }
     var musicList by savedStateHandle.saveable { mutableStateOf(listOf<AudioItem>()) }
 
-    private val _homeUiState: MutableStateFlow<HomeUIState> = MutableStateFlow(HomeUIState.InitialHome)
+    private val _homeUiState: MutableStateFlow<HomeUIState> =
+        MutableStateFlow(HomeUIState.InitialHome)
     val homeUIState: StateFlow<HomeUIState> = _homeUiState.asStateFlow()
 
     init {
@@ -60,9 +79,7 @@ class HomeViewModel @Inject constructor(
                     is MusicStates.MediaReady -> {
                         duration = musicStates.duration
                         _homeUiState.value = HomeUIState.HomeReady
-
                     }
-
                 }
             }
         }
@@ -132,8 +149,9 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun progressCalculation(currentProgress: Long) {
-        progress = if (currentProgress > 0) ((currentProgress.toFloat() / duration.toFloat()) * 100f)
-        else 0f
+        progress =
+            if (currentProgress > 0) ((currentProgress.toFloat() / duration.toFloat()) * 100f)
+            else 0f
 
         progressValue = formatDurationValue(currentProgress)
     }
@@ -151,5 +169,4 @@ class HomeViewModel @Inject constructor(
         }
         super.onCleared()
     }
-
 }

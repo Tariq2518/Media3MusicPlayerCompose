@@ -35,7 +35,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             Media3ComposeMusicAppTheme {
                 val isPermissionGranted = rememberPermissionState(
-                    permission = if (Build.VERSION.SDK_INT >= 33) Manifest.permission.READ_MEDIA_AUDIO else Manifest.permission.READ_EXTERNAL_STORAGE
+                    permission = if (Build.VERSION.SDK_INT >= 33)
+                        Manifest.permission.READ_MEDIA_AUDIO
+                    else
+                        Manifest.permission.READ_EXTERNAL_STORAGE
                 )
                 val lifeCycleOwner = LocalLifecycleOwner.current
 
@@ -72,11 +75,8 @@ class MainActivity : ComponentActivity() {
                         onNextCallback = {
                             homeViewModel.onHomeUiEvents(HomeUiEvents.SeekToNext)
                         }
-
                     )
-
                 }
-
             }
         }
     }
