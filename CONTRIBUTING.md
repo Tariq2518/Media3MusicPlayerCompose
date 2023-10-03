@@ -1,4 +1,5 @@
 Be Mindful and Follow the best practices for android and only Use Jetpack Compose with Material3
+Keep it as simple as possible I will merge you PR's after reviewing it.
 
 Add new features to the Music player App some suggesstions are below
 - Add Player Screen 
