@@ -22,7 +22,7 @@ class MusicNotificationDescriptorAdapter(
 
     override fun createCurrentContentIntent(player: Player): PendingIntent? = pendingIntent
 
-    override fun getCurrentContentText(player: Player): CharSequence? =
+    override fun getCurrentContentText(player: Player): CharSequence =
         player.mediaMetadata.displayTitle ?: "Unknown"
 
     override fun getCurrentLargeIcon(
@@ -39,7 +39,6 @@ class MusicNotificationDescriptorAdapter(
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) = Unit
-
             })
 
         return null

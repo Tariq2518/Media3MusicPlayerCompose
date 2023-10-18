@@ -1,7 +1,5 @@
 package com.tariq.media3composemusicapp.utils
 
-import java.text.FieldPosition
-
 sealed class HomeUiEvents {
     object PlayPause : HomeUiEvents()
     data class CurrentAudioChanged(val index: Int) : HomeUiEvents()
@@ -11,5 +9,4 @@ sealed class HomeUiEvents {
     object SeekToPrevious : HomeUiEvents()
     object Backward : HomeUiEvents()
     object Forward : HomeUiEvents()
-
 }

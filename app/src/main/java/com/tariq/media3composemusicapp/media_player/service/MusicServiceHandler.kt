@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MusicServiceHandler @Inject constructor(
-    private val exoPlayer: ExoPlayer
+    private val exoPlayer: ExoPlayer,
 ) : Player.Listener {
 
     private val _musicStates: MutableStateFlow<MusicStates> = MutableStateFlow(MusicStates.Initial)
@@ -42,7 +42,7 @@ class MusicServiceHandler @Inject constructor(
     suspend fun onMediaStateEvents(
         mediaStateEvents: MediaStateEvents,
         selectedMusicIndex: Int = -1,
-        seekPosition: Long = 0
+        seekPosition: Long = 0,
     ) {
         when (mediaStateEvents) {
             MediaStateEvents.Backward -> exoPlayer.seekBack()
@@ -79,9 +79,18 @@ class MusicServiceHandler @Inject constructor(
 
     override fun onPlaybackStateChanged(playbackState: Int) {
         when (playbackState) {
-            ExoPlayer.STATE_BUFFERING -> _musicStates.value = MusicStates.MediaBuffering(exoPlayer.currentPosition)
+            ExoPlayer.STATE_BUFFERING -> _musicStates.value =
+                MusicStates.MediaBuffering(exoPlayer.currentPosition)
+
             ExoPlayer.STATE_READY -> _musicStates.value = MusicStates.MediaReady(exoPlayer.duration)
 
+            Player.STATE_ENDED -> {
+                // no-op
+            }
+
+            Player.STATE_IDLE -> {
+                // no-op
+            }
         }
     }
 

@@ -9,7 +9,6 @@ sealed class MediaStateEvents {
     object Forward : MediaStateEvents()
     object Stop : MediaStateEvents()
     object SelectedMusicChange : MediaStateEvents()
-
     data class MediaProgress(val progress: Float) : MediaStateEvents()
 
 }

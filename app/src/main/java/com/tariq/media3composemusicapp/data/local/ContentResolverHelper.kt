@@ -13,9 +13,9 @@ import com.tariq.media3composemusicapp.data.local.models.AudioItem
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-
-class ContentResolverHelper @Inject
-constructor(@ApplicationContext val context: Context) {
+class ContentResolverHelper @Inject constructor(
+    @ApplicationContext val context: Context,
+) {
     private var mCursor: Cursor? = null
 
     private val projection: Array<String> = arrayOf(
@@ -24,9 +24,8 @@ constructor(@ApplicationContext val context: Context) {
         MediaStore.Audio.AudioColumns.ARTIST,
         MediaStore.Audio.AudioColumns.DATA,
         MediaStore.Audio.AudioColumns.DURATION,
-        MediaStore.Audio.AudioColumns.TITLE,
-
-        )
+        MediaStore.Audio.AudioColumns.TITLE
+    )
 
     private var selectionClause: String? = "${MediaStore.Audio.AudioColumns.IS_MUSIC} = ?"
     private var selectionArg = arrayOf("1")
@@ -38,7 +37,7 @@ constructor(@ApplicationContext val context: Context) {
         return getCursorData()
     }
 
-    private fun getCursorData(): MutableList<AudioItem> {
+    private fun getCursorData(): List<AudioItem> {
         val audioList = mutableListOf<AudioItem>()
         mCursor = context.contentResolver.query(
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -74,12 +73,11 @@ constructor(@ApplicationContext val context: Context) {
                             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                             id
                         )
-                        val retriever = MediaMetadataRetriever()
-                        retriever.setDataSource(context, uri)
-                        val coverBytes = retriever.embeddedPicture
+                        val coverBytes = MediaMetadataRetriever().apply {
+                            setDataSource(context, uri)
+                        }.embeddedPicture
                         val songCover: Bitmap? = if (coverBytes != null)
                             BitmapFactory.decodeByteArray(coverBytes, 0, coverBytes.size) else null
-
 
                         audioList += AudioItem(
                             id, uri, displayName, artist, duration, title, data, songCover
@@ -87,7 +85,6 @@ constructor(@ApplicationContext val context: Context) {
                     }
                 }
             }
-
         }
         return audioList
     }
