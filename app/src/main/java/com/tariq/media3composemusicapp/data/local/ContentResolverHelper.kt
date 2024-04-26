@@ -73,9 +73,15 @@ class ContentResolverHelper @Inject constructor(
                             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                             id
                         )
-                        val coverBytes = MediaMetadataRetriever().apply {
-                            setDataSource(context, uri)
-                        }.embeddedPicture
+                        Log.i("URI", "getCursorData: $uri")
+                        val coverBytes = try {
+
+                            MediaMetadataRetriever().apply {
+                                setDataSource(context, uri)
+                            }.embeddedPicture
+                        } catch (e: Exception) {
+                            null
+                        }
                         val songCover: Bitmap? = if (coverBytes != null)
                             BitmapFactory.decodeByteArray(coverBytes, 0, coverBytes.size) else null
 

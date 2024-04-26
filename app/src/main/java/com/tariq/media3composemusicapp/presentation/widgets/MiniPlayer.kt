@@ -50,11 +50,17 @@ fun MiniPlayer(
     isMusicPlaying: Boolean,
     onStartCallback: () -> Unit,
     onNextCallback: () -> Unit,
+    onMiniPlayerClick: (musicItem: AudioItem) -> Unit
+
 ) {
     BottomAppBar(
         content = {
             Column(
-                modifier = Modifier.padding(bottom = 8.dp, start = 8.dp, end = 8.dp)
+                modifier = Modifier
+                    .padding(bottom = 16.dp, start = 8.dp, end = 8.dp)
+                    .clickable {
+                        onMiniPlayerClick.invoke(musicItem)
+                    }
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -73,7 +79,7 @@ fun MiniPlayer(
                         onNextCallback
                     )
                 }
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 Slider(
                     value = progress,
                     valueRange = 0f..100f,
@@ -202,8 +208,11 @@ fun PreviewMiniPlayer() {
                 musicItem = AudioItem(
                     0, Uri.parse(""), "Song Name", "Artist Name", 0, "title", "", null
                 ),
-                1.4f, { it }, false, {}
-            ) {}
+                1.4f, { it }, false,
+                onStartCallback = {},
+                onNextCallback = {},
+                onMiniPlayerClick = {}
+            )
         }
     }
 }

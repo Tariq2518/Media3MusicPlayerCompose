@@ -15,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.tariq.media3composemusicapp.media_player.service.MediaService
+import com.tariq.media3composemusicapp.navigation.SetupNavGraph
 import com.tariq.media3composemusicapp.presentation.screens.home.HomeScreen
 import com.tariq.media3composemusicapp.presentation.screens.home.HomeViewModel
 import com.tariq.media3composemusicapp.ui.theme.Media3ComposeMusicAppTheme
@@ -53,29 +55,19 @@ class MainActivity : ComponentActivity() {
                         lifeCycleOwner.lifecycle.removeObserver(observer)
                     }
                 }
+                val navController = rememberNavController()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen(
-                        progress = homeViewModel.progress,
-                        onProgressCallback = {
-                            homeViewModel.onHomeUiEvents(HomeUiEvents.SeekTo(it))
-                        },
-                        isMusicPlaying = homeViewModel.isMusicPlaying,
-                        currentPlayingMusic = homeViewModel.currentSelectedMusic,
-                        musicList = homeViewModel.musicList,
-                        onStartCallback = {
-                            homeViewModel.onHomeUiEvents(HomeUiEvents.PlayPause)
-                        },
-                        onMusicClick = {
-                            homeViewModel.onHomeUiEvents(HomeUiEvents.CurrentAudioChanged(it))
+                    SetupNavGraph(
+                        navController = navController,
+                        homeViewModel,
+                        startMusicServiceCallback = {
                             startMusicService()
-                        },
-                        onNextCallback = {
-                            homeViewModel.onHomeUiEvents(HomeUiEvents.SeekToNext)
                         }
                     )
+
                 }
             }
         }
